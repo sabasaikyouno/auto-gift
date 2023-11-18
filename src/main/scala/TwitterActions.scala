@@ -1,4 +1,4 @@
-import org.openqa.selenium.Keys
+import org.openqa.selenium.{By, Keys}
 import org.openqa.selenium.chrome.ChromeDriver
 
 object TwitterActions {
@@ -8,6 +8,14 @@ object TwitterActions {
 
     like()
     repost()
+  }
+
+  //フォロー
+  def follow(url: String)(implicit chrome: ChromeDriver)  = {
+    chrome.get(url)
+    Thread.sleep(2500)
+
+    chrome.findElement(By.cssSelector(".css-18t94o4.css-1dbjc4n.r-42olwf.r-sdzlij.r-1phboty.r-rs99b7.r-2yi16.r-1qi8awa.r-1ny4l3l.r-ymttw5.r-o7ynqc.r-6416eg.r-lrvibr")).click()
   }
 
   //いいねする
