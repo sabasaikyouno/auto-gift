@@ -9,7 +9,7 @@ object GetTweets {
     chrome.get(makeSearchUrl(lastDateTime))
     Thread.sleep(5000)
 
-    val tweets = mutable.HashSet[String]()
+    val tweets = mutable.HashSet[(String, String)]()
 
     val jsExecutor = chrome.asInstanceOf[JavascriptExecutor]
 
@@ -21,7 +21,11 @@ object GetTweets {
         .findElement(By.xpath("//div[@aria-label='タイムライン: タイムラインを検索']"))
         .findElements(By.cssSelector(".css-4rbku5.css-18t94o4.css-901oao.r-14j79pv.r-1loqt21.r-xoduu5.r-1q142lx.r-1w6e6rj.r-1tl8opc.r-a023e6.r-16dba41.r-9aw3ui.r-rjixqe.r-bcqeeo.r-3s2u2q.r-qvutc0"))
         .asScala
-        .foreach(tweets += _.getAttribute("href"))
+        .foreach { ele =>
+          val url = ele.getAttribute("href")
+          val userId = url.drop(20).split('/').head
+          tweets += ((url, userId))
+        }
     }
 
     tweets.toList
