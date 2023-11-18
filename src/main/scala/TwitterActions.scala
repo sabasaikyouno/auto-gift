@@ -4,7 +4,8 @@ import org.openqa.selenium.chrome.ChromeDriver
 object TwitterActions {
   def likeAndRepost(url: String)(implicit chrome: ChromeDriver): Unit = {
     chrome.get(url)
-    Thread.sleep(5000)
+    //要素が要素が読み込まれるまで待つ
+    chrome.findElement(By.xpath("//section[@aria-labelledby='accessible-list-0']"))
 
     like()
     repost()
