@@ -12,7 +12,8 @@ object TwitterActions {
   }
 
   //フォロー
-  def follow(url: String)(implicit chrome: ChromeDriver)  = {
+  def follow(id: String)(implicit chrome: ChromeDriver)  = {
+    val url = s"https://twitter.com/$id"
     chrome.get(url)
     //要素が読み込まれるまで待つ
     chrome.findElement(By.cssSelector(".css-1dbjc4n.r-1ifxtd0.r-ymttw5.r-ttdzmv"))
