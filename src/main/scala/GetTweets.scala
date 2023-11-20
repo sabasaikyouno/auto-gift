@@ -28,7 +28,7 @@ object GetTweets {
         }
     }
 
-    tweets.toList
+    tweets
   }
 
   //スクロールできるかどうか
