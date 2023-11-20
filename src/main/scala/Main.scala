@@ -38,7 +38,7 @@ object Main {
         noFollows.foreach(follow)
       }
       noFollows.foreach(followingHashSet += _)
-      Thread.sleep(1800)
+      Thread.sleep(1800000)
     }
 
     tweets.grouped(14).foreach { tweetList =>
@@ -46,10 +46,10 @@ object Main {
         change_account(myId)
         tweetList.foreach{case (url, _) => likeAndRepost(url)}
       }
-      Thread.sleep(900)
+      Thread.sleep(900000)
     }
 
-    Thread.sleep(Seconds.secondsBetween(new DateTime(), nextTime).getSeconds)
+    Thread.sleep(Seconds.secondsBetween(new DateTime(), nextTime).getSeconds.toLong * 1000)
     loop(new DateTime().toString, new DateTime().plusDays(1))
   }
 }
