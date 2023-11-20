@@ -3,6 +3,7 @@ import java.time.Duration
 
 import GetTweets.getTweets
 import TwitterActions.{change_account, follow, likeAndRepost}
+import TwitterLogin.login
 import VariousCSV.{followingWrite, getAccounts, getFollowing}
 import org.joda.time.{DateTime, LocalDate, Seconds}
 
@@ -11,17 +12,15 @@ import scala.collection.mutable
 object Main {
   private val followingHashSet = mutable.HashSet(getFollowing: _*)
 
-  def main(args: Array[String]) = {
-    System.setProperty("webdriver.chrome.driver", "chrome\\chromedriver_win32\\chromedriver.exe")
-    val options = new ChromeOptions()
-    options.addArguments("--user-data-dir=\\chrome")
-    options.addArguments("--profile-directory=Profile1")
-
-    implicit val chrome: ChromeDriver = new ChromeDriver(options)
+  def main(args: Array[String]) = {implicit val chrome: ChromeDriver = new ChromeDriver()
     chrome.manage().timeouts().implicitlyWait(Duration.ofSeconds(5))
 
     scala.sys.addShutdownHook {
       followingWrite(followingHashSet)
+    }
+
+    getAccounts.foreach { case (id, pass) =>
+      login(id, pass)
     }
 
     loop(new LocalDate().minusDays(2).toString, new DateTime().plusDays(1))
