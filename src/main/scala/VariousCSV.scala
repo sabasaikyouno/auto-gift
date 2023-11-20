@@ -3,10 +3,12 @@ import java.io.File
 import com.github.tototoshi.csv.{CSVReader, CSVWriter}
 
 object VariousCSV {
-  def getFollowing = {
-    val reader = CSVReader.open(new File("src\\main\\resources\\following.csv"))
+  def getFollowing(id: String) = {
+    val file = new File(s"src\\main\\resources\\following$id")
+    file.createNewFile()
+    val reader = CSVReader.open(file)
 
-    reader.all().head
+    reader.readNext.getOrElse(List())
   }
 
   def getAccounts = {
