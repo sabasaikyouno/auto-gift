@@ -2,7 +2,7 @@ import org.joda.time.DateTime
 import org.openqa.selenium.{By, JavascriptExecutor}
 import org.openqa.selenium.chrome.ChromeDriver
 
-import scala.collection.mutable
+import scala.collection.immutable.HashSet
 import scala.jdk.CollectionConverters._
 
 object GetTweets {
@@ -10,10 +10,10 @@ object GetTweets {
     chrome.get(searchUrl)
     Thread.sleep(3000)
     val lastDateTime = DateTime.parse(lastDateTimeStr)
-    getTweetsList(mutable.HashSet[(String, String)](), lastDateTime)
+    getTweetsList(HashSet[(String, String)](), lastDateTime)
   }
 
-  private def getTweetsList(tweetsHash: mutable.HashSet[(String, String)], lastDateTime: DateTime)(implicit chrome: ChromeDriver): mutable.HashSet[(String, String)] = {
+  private def getTweetsList(tweetsHash: HashSet[(String, String)], lastDateTime: DateTime)(implicit chrome: ChromeDriver): HashSet[(String, String)] = {
     val tweetsEle = chrome
       .findElement(By.xpath("//div[@aria-label='タイムライン: タイムラインを検索']"))
       .findElements(By.cssSelector(".css-1rynq56.r-bcqeeo.r-qvutc0.r-1tl8opc.r-a023e6.r-rjixqe.r-16dba41.r-xoduu5.r-1q142lx.r-1w6e6rj.r-9aw3ui.r-3s2u2q.r-1loqt21"))
@@ -29,7 +29,7 @@ object GetTweets {
     val nextTweets = tweetsHash ++ tweets
     val dateTimeList = tweetsEle.map( ele => DateTime.parse(ele.findElement(By.tagName("time")).getAttribute("datetime")))
 
-    if (dateTimeList.exists(_.isAfter(lastDateTime)) && nextTweets.size <= 1000) {
+    if (dateTimeList.exists(_.isAfter(lastDateTime)) && nextTweets.size <= 15) {
       println(tweets)
       val jsExecutor = chrome.asInstanceOf[JavascriptExecutor]
       jsExecutor.executeScript("window.scrollBy(0, 500);")
