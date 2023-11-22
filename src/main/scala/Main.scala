@@ -1,10 +1,11 @@
-import org.openqa.selenium.chrome.{ChromeDriver, ChromeOptions}
+import org.openqa.selenium.chrome.{ChromeDriver}
 import java.time.Duration
 
 import GetTweets.getTweets
 import TwitterActions.{change_account, follow, likeAndRepost}
 import TwitterLogin.login
 import VariousCSV.{getAccounts, getFollowing, getNoFollowing, writeFollowing, writeNoFollowing}
+import org.joda.time.{DateTime, LocalDate, Seconds}
 
 import scala.collection.immutable.HashSet
 import scala.collection.mutable
