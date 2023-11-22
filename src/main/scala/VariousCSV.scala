@@ -2,6 +2,7 @@ import java.io.File
 
 import com.github.tototoshi.csv.{CSVReader, CSVWriter}
 
+import scala.collection.immutable.HashSet
 import scala.collection.mutable
 
 object VariousCSV {
@@ -11,8 +12,20 @@ object VariousCSV {
     reader.readNext.getOrElse(List())
   }
 
-  def followingWrite(list: mutable.HashSet[String]) = {
-    val writer = CSVWriter.open(new File("following.csv"))
+  def getNoFollowing = {
+    val reader = CSVReader.open(new File("src\\main\\resources\\no_following.csv"))
+
+    reader.readNext.getOrElse(List())
+  }
+
+  def writeNoFollowing(list: HashSet[String]) = {
+    val writer = CSVWriter.open(new File("src\\main\\resources\\no_following.csv"))
+
+    writer.writeRow(list.toList)
+  }
+
+  def writeFollowing(list: mutable.HashSet[String]) = {
+    val writer = CSVWriter.open(new File("src\\main\\resources\\following.csv"))
 
     writer.writeRow(list.toList)
   }
