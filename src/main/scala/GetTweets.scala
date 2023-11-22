@@ -19,11 +19,12 @@ object GetTweets {
       Thread.sleep(1000) // スクロールが完了するまで待機
       chrome
         .findElement(By.xpath("//div[@aria-label='タイムライン: タイムラインを検索']"))
-        .findElements(By.cssSelector(".css-4rbku5.css-18t94o4.css-901oao.r-14j79pv.r-1loqt21.r-xoduu5.r-1q142lx.r-1w6e6rj.r-1tl8opc.r-a023e6.r-16dba41.r-9aw3ui.r-rjixqe.r-bcqeeo.r-3s2u2q.r-qvutc0"))
+        .findElements(By.cssSelector(".css-1rynq56.r-bcqeeo.r-qvutc0.r-1tl8opc.r-a023e6.r-rjixqe.r-16dba41.r-xoduu5.r-1q142lx.r-1w6e6rj.r-9aw3ui.r-3s2u2q.r-1loqt21"))
         .asScala
         .foreach { ele =>
           val url = ele.getAttribute("href")
           val userId = url.drop(20).split('/').head
+          println(url)
           tweets += ((url, userId))
         }
     }

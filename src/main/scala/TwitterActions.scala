@@ -19,14 +19,14 @@ object TwitterActions {
     chrome.get(url)
 
     Try{
-      chrome.findElement(By.cssSelector(".css-18t94o4.css-1dbjc4n.r-sdzlij.r-1phboty.r-rs99b7.r-2yi16.r-1qi8awa.r-1ny4l3l.r-ymttw5.r-o7ynqc.r-6416eg.r-lrvibr")).click()
+      chrome.findElement(By.cssSelector(".css-175oi2r.r-sdzlij.r-1phboty.r-rs99b7.r-lrvibr.r-2yi16.r-1qi8awa.r-ymttw5.r-o7ynqc.r-6416eg.r-1ny4l3l")).click()
     }.getOrElse(())
   }
 
   def change_account(id: String)(implicit chrome: ChromeDriver) = {
     chrome.get("https://twitter.com/home")
     //アカウントメニューを開く
-    chrome.findElement(By.cssSelector(".css-18t94o4.css-1dbjc4n.r-1awozwy.r-sdzlij.r-6koalj.r-18u37iz.r-1ny4l3l.r-xyw6el.r-o7ynqc.r-6416eg")).click()
+    chrome.findElement(By.cssSelector(".css-175oi2r.r-1awozwy.r-sdzlij.r-6koalj.r-18u37iz.r-xyw6el.r-o7ynqc.r-6416eg.r-1ny4l3l")).click()
     Thread.sleep(1000)
     Try{
       chrome.findElement(By.xpath(s"//div[@aria-label='${id}に切り替える']")).click()
