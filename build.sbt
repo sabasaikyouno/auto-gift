@@ -13,6 +13,7 @@ libraryDependencies += "com.github.tototoshi" %% "scala-csv" % "1.3.10"
 assemblyMergeStrategy in assembly := {
   case x if x.contains("io.netty.versions.properties") => MergeStrategy.discard
   case PathList("META-INF", "versions", "9", "module-info.class") => MergeStrategy.first
+  case PathList(ps @ _*) if ps.last endsWith ".class" => MergeStrategy.first
   case x =>
     val oldStrategy = (assemblyMergeStrategy in assembly).value
     oldStrategy(x)
