@@ -30,7 +30,6 @@ object GetTweets {
     val dateTimeList = tweetsEle.map( ele => DateTime.parse(ele.findElement(By.tagName("time")).getAttribute("datetime")))
 
     if (dateTimeList.exists(_.isAfter(lastDateTime)) && nextTweets.size <= 1000) {
-      println(tweets)
       val jsExecutor = chrome.asInstanceOf[JavascriptExecutor]
       jsExecutor.executeScript("window.scrollBy(0, 500);")
       Thread.sleep(1000) // スクロールが完了するまで待機
