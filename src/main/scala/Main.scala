@@ -5,6 +5,7 @@ import GetTweets.getTweets
 import TwitterActions.{change_account, follow, likeAndRepost}
 import TwitterLogin.login
 import VariousCSV.{getAccounts, getFollowing, getNoFollowing, writeFollowing, writeNoFollowing}
+import org.joda.time.{DateTime, LocalDate, Seconds}
 
 import scala.collection.immutable.HashSet
 import scala.collection.mutable
@@ -52,7 +53,7 @@ object Main {
   }
 
   def startFollow(noFollowList: HashSet[String], myAccounts: List[(String, String)])(implicit chrome: ChromeDriver) = {
-    val nextFollowTime = new DateTime().plusMinutes(30)
+    var nextFollowTime = new DateTime().plusMinutes(30)
 
     noFollowList.grouped(15).foreach { noFollows =>
       myAccounts.foreach{case (myId, _) =>
@@ -62,11 +63,12 @@ object Main {
       noFollows.foreach(followingHashSet += _)
 
       Thread.sleep(Seconds.secondsBetween(new DateTime(), nextFollowTime).getSeconds * 1000)
+      nextFollowTime = new DateTime().plusMinutes(30)
     }
   }
 
   def startLikeAndRepost(tweets: HashSet[(String, String)], myAccounts:  List[(String, String)])(implicit chrome: ChromeDriver) = {
-    val nextLikeAndRepostTime = new DateTime().plusMinutes(15)
+    var nextLikeAndRepostTime = new DateTime().plusMinutes(15)
 
     tweets.grouped(40).foreach { tweetList =>
       myAccounts.foreach{case (myId, _) =>
@@ -75,6 +77,7 @@ object Main {
       }
 
       Thread.sleep(Seconds.secondsBetween(new DateTime(), nextLikeAndRepostTime).getSeconds * 1000)
+      nextLikeAndRepostTime = new DateTime().plusMinutes(15)
     }
   }
 }

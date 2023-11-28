@@ -7,7 +7,7 @@ import scala.collection.mutable
 
 object VariousCSV {
   def getFollowing = {
-    val reader = CSVReader.open(new File("following.csv"))
+    val reader = CSVReader.open(new File("src\\main\\resources\\following.csv"))
 
     reader.readNext.getOrElse(List())
   }
