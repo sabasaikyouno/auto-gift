@@ -5,12 +5,14 @@ import scala.util.Try
 
 object TwitterActions {
   def likeAndRepost(url: String)(implicit chrome: ChromeDriver): Unit = {
-    chrome.get(url)
-    //要素が要素が読み込まれるまで待つ
-    chrome.findElement(By.xpath("//section[@aria-labelledby='accessible-list-0']"))
+    Try {
+      chrome.get(url)
+      //要素が要素が読み込まれるまで待つ
+      chrome.findElement(By.xpath("//section[@aria-labelledby='accessible-list-0']"))
 
-    like()
-    repost()
+      like()
+      repost()
+    }.getOrElse(())
   }
 
   //フォロー
