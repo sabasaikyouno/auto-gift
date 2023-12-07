@@ -1,4 +1,4 @@
-import org.openqa.selenium.{By, Keys}
+import org.openqa.selenium.{By, Cookie, Keys}
 import org.openqa.selenium.chrome.ChromeDriver
 
 import scala.util.Try
@@ -25,14 +25,11 @@ object TwitterActions {
     }.getOrElse(())
   }
 
-  def change_account(id: String)(implicit chrome: ChromeDriver) = {
+  def change_account(authToken: String)(implicit chrome: ChromeDriver) = {
+    chrome.manage().deleteCookieNamed("auth_token")
+    chrome.manage().addCookie(new Cookie("auth_token", authToken))
     chrome.get("https://twitter.com/home")
-    //アカウントメニューを開く
-    chrome.findElement(By.cssSelector(".css-175oi2r.r-1awozwy.r-sdzlij.r-6koalj.r-18u37iz.r-xyw6el.r-o7ynqc.r-6416eg.r-1ny4l3l")).click()
-    Thread.sleep(1000)
-    Try{
-      chrome.findElement(By.xpath(s"//div[@aria-label='${id}に切り替える']")).click()
-    }.getOrElse(())
+    Thread.sleep(1500)
   }
 
   //いいねする
