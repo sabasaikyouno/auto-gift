@@ -31,7 +31,7 @@ object VariousCSV {
   }
 
   def getAccounts = {
-    val reader = CSVReader.open(new File("src\\main\\resources\\twitter_login.csv"))
+    val reader = CSVReader.open(new File("twitter_login.csv"))
 
     reader.all().flatten.grouped(2).map(l => (l.head, l.last)).toList
   }
