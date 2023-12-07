@@ -14,6 +14,7 @@ import scala.concurrent.Future
 
 object Main {
   private val followingHashSet = mutable.HashSet(getFollowing: _*)
+  private val myAccountsCookie = mutable.HashSet[String]()
 
   def main(args: Array[String]) = {
     val chrome: ChromeDriver = new ChromeDriver()
@@ -28,6 +29,7 @@ object Main {
 
     getAccounts.foreach { case (id, pass) =>
       login(id, pass)(chrome)
+      myAccountsCookie += chrome.manage().getCookieNamed("auth_token").getValue
     }
 
     getAccounts.foreach { case (id, pass) =>
@@ -40,24 +42,23 @@ object Main {
   def start(lastDateTime: String, nextTime: DateTime)(chrome: ChromeDriver, chrome2: ChromeDriver): Unit = {
     val tweets = getTweets(lastDateTime)(chrome)
     val noFollowList = tweets.map(_._2).diff(followingHashSet.toSet) ++ getNoFollowing
-    val myAccounts = getAccounts
 
     writeNoFollowing(noFollowList.drop(100))
 
-    Future(startFollow(noFollowList.take(100), myAccounts)(chrome2))
+    Future(startFollow(noFollowList.take(100))(chrome2))
 
-    startLikeAndRepost(tweets, myAccounts)(chrome)
+    startLikeAndRepost(tweets)(chrome)
 
     Thread.sleep(Seconds.secondsBetween(new DateTime(), nextTime).getSeconds.toLong * 1000)
     start(new DateTime().toString, new DateTime().plusDays(1))(chrome, chrome2)
   }
 
-  def startFollow(noFollowList: HashSet[String], myAccounts: List[(String, String)])(implicit chrome: ChromeDriver) = {
+  def startFollow(noFollowList: HashSet[String])(implicit chrome: ChromeDriver) = {
     var nextFollowTime = new DateTime().plusMinutes(30)
 
     noFollowList.grouped(15).foreach { noFollows =>
-      myAccounts.foreach{case (myId, _) =>
-        change_account(myId)
+      myAccountsCookie.foreach { authToken =>
+        change_account(authToken)
         noFollows.foreach(follow)
       }
       noFollows.foreach(followingHashSet += _)
@@ -67,12 +68,12 @@ object Main {
     }
   }
 
-  def startLikeAndRepost(tweets: HashSet[(String, String)], myAccounts:  List[(String, String)])(implicit chrome: ChromeDriver) = {
+  def startLikeAndRepost(tweets: HashSet[(String, String)])(implicit chrome: ChromeDriver) = {
     var nextLikeAndRepostTime = new DateTime().plusMinutes(15)
 
     tweets.grouped(40).foreach { tweetList =>
-      myAccounts.foreach{case (myId, _) =>
-        change_account(myId)
+      myAccountsCookie.foreach{ authToken =>
+        change_account(authToken)
         tweetList.foreach{case (url, _) => likeAndRepost(url)}
       }
 
