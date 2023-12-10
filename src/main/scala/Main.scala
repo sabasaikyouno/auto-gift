@@ -17,10 +17,15 @@ object Main {
   private val myAccountsCookie = mutable.HashSet[String]()
 
   def main(args: Array[String]) = {
-    val chrome: ChromeDriver = new ChromeDriver()
+    val options = new ChromeOptions()
+    options.addArguments("--headless=new")
+    options.addArguments("--disable-gpu")
+    options.addArguments("--window-size=945,1020")
+
+    val chrome: ChromeDriver = new ChromeDriver(options)
     chrome.manage().timeouts().implicitlyWait(Duration.ofSeconds(5))
 
-    val chrome2: ChromeDriver = new ChromeDriver()
+    val chrome2: ChromeDriver = new ChromeDriver(options)
     chrome2.manage().timeouts().implicitlyWait(Duration.ofSeconds(5))
 
     scala.sys.addShutdownHook {
@@ -36,7 +41,7 @@ object Main {
       login(id, pass)(chrome2)
     }
     
-    start(new LocalDate().minusDays(2).toString, new DateTime().plusDays(1))(chrome, chrome2)
+    start(new LocalDate().minusDays(1).toString, new DateTime().plusDays(1))(chrome, chrome2)
   }
 
   def start(lastDateTime: String, nextTime: DateTime)(chrome: ChromeDriver, chrome2: ChromeDriver): Unit = {
@@ -50,7 +55,7 @@ object Main {
     startLikeAndRepost(tweets)(chrome)
 
     Thread.sleep(Seconds.secondsBetween(new DateTime(), nextTime).getSeconds.toLong * 1000)
-    start(new DateTime().toString, new DateTime().plusDays(1))(chrome, chrome2)
+    start(nextTime.minusDays(1).toString, new DateTime().plusDays(1))(chrome, chrome2)
   }
 
   def startFollow(noFollowList: HashSet[String])(implicit chrome: ChromeDriver) = {
