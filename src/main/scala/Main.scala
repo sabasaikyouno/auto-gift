@@ -1,9 +1,9 @@
 import org.openqa.selenium.chrome.{ChromeDriver, ChromeOptions}
 import java.time.Duration
 
-import GetTweets.getTweets
-import TwitterActions.{change_account, follow, likeAndRepost}
-import TwitterLogin.login
+import twitter.GetTweets.getTweets
+import twitter.TwitterActions.{change_account, follow, likeAndRepost}
+import twitter.TwitterLogin.login
 import VariousCSV.{getAccounts, getFollowing, getNoFollowing, writeFollowing, writeNoFollowing}
 import org.joda.time.{DateTime, LocalDate, Seconds}
 
@@ -30,6 +30,8 @@ object Main {
 
     scala.sys.addShutdownHook {
       writeFollowing(followingHashSet)
+      chrome.quit()
+      chrome2.quit()
     }
 
     getAccounts.foreach { case (id, pass) =>
