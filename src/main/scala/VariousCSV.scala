@@ -4,6 +4,7 @@ import java.io.File
 
 import com.github.tototoshi.csv.{CSVReader, CSVWriter}
 
+import java.io.File
 import scala.collection.immutable.HashSet
 import scala.collection.mutable
 
