@@ -1,6 +1,8 @@
+package twitter
+
 import org.joda.time.DateTime
-import org.openqa.selenium.{By, JavascriptExecutor}
 import org.openqa.selenium.chrome.ChromeDriver
+import org.openqa.selenium.{By, JavascriptExecutor}
 
 import scala.collection.immutable.HashSet
 import scala.jdk.CollectionConverters._
