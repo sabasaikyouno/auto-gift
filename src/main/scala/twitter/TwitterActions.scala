@@ -1,5 +1,7 @@
-import org.openqa.selenium.{By, Cookie, Keys}
+package twitter
+
 import org.openqa.selenium.chrome.ChromeDriver
+import org.openqa.selenium.{By, Cookie, Keys}
 
 import scala.util.Try
 
