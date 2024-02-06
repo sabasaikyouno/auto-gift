@@ -1,7 +1,5 @@
 package csv
 
-import java.io.File
-
 import com.github.tototoshi.csv.{CSVReader, CSVWriter}
 
 import java.io.File
